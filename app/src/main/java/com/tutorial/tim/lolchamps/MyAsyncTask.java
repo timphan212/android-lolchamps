@@ -8,15 +8,24 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Tim on 6/16/2015.
  */
+
 public class MyAsyncTask extends AsyncTask<String, Void, String> {
+    private String jsonType;
+    public AsyncResponse delegate;
+
+    public MyAsyncTask(AsyncResponse delegate, String str) {
+        this.delegate = delegate;
+        this.jsonType = str;
+    }
 
     @Override
     protected String doInBackground(String... params) {
@@ -46,15 +55,21 @@ public class MyAsyncTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String str) {
+        if(this.jsonType.compareTo("champInfo") == 0) {
+            parseChampInfo(str);
+        }
+    }
+
+    private void parseChampInfo(String str) {
         Gson gson = new Gson();
-        Champions.ChampionList champObj = gson.fromJson(str, Champions.ChampionList.class);
-        List<Long> list = new ArrayList<>();
-        for(Champions.ChampionInfo champ : champObj.champions) {
-            list.add(champ.id);
+        ChampionInfo.ChampionList champListObj = gson.fromJson(str, ChampionInfo.ChampionList.class);
+        List<String> list = new ArrayList<>();
+
+        for(Map.Entry<String, String> entry : champListObj.keys.entrySet()) {
+            list.add(entry.getValue());
         }
 
-        for(int i = 0; i < list.size(); i++) {
-            Log.w("champid", String.valueOf(list.get(i)));
-        }
+        Collections.sort(list);
+        delegate.processFinish(list);
     }
 }

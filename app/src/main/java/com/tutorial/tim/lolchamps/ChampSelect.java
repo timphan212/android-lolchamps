@@ -3,10 +3,8 @@ package com.tutorial.tim.lolchamps;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,31 +13,16 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-public class ChampSelect extends ActionBarActivity {
+public class ChampSelect extends ActionBarActivity implements AsyncResponse {
     String[] champNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_champ_select);
-        retrieveJSON();
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(this));
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Toast.makeText(ChampSelect.this, "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+        retrieveJSON("https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?locale=en_US&champData=all&api_key=f23647de-97c3-4cf7-b8d3-f35956a574d9", "champInfo");
     }
 
     @Override
@@ -72,14 +55,30 @@ public class ChampSelect extends ActionBarActivity {
         return null;
     }
 
-    public void retrieveJSON() {
+    public void retrieveJSON(String url, String jsonType) {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if(networkInfo != null && networkInfo.isConnected()) {
-            new MyAsyncTask().execute("https://na.api.pvp.net/api/lol/na/v1.2/champion?api_key=f23647de-97c3-4cf7-b8d3-f35956a574d9");
+            MyAsyncTask asyncTask = new MyAsyncTask(this, jsonType);
+            asyncTask.execute(url);
         }
         else {
             //User has no internet
         }
+    }
+
+    @Override
+    public void processFinish(List<String> output) {
+        for(String entry : output) {
+            Log.w("champName", entry);
+        }
+
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(new ImageAdapter(this, output));
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                Toast.makeText(ChampSelect.this, "" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

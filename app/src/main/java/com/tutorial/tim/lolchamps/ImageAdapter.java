@@ -1,6 +1,7 @@
 package com.tutorial.tim.lolchamps;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,19 +13,23 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 /**
  * Created by Tim on 6/11/2015.
  */
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
-    public ImageAdapter(Context c) {
+    private List<String> champNames;
+    public ImageAdapter(Context c, List<String> champNames) {
         mContext = c;
+        this.champNames = champNames;
     }
 
     @Override
     public int getCount() {
         //retrieve count of current champions
-        return 100;
+        return champNames.size();
     }
 
     @Override
@@ -42,22 +47,18 @@ public class ImageAdapter extends BaseAdapter {
         View grid;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (convertView == null) {
-            grid = new ImageView(mContext);
-            grid = inflater.inflate(R.layout.grid_single, null);
-            TextView textView = (TextView) grid.findViewById(R.id.grid_text);
-            ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
-            textView.setText("Aatrox");
-            String url = "http://ddragon.leagueoflegends.com/cdn/5.10.1/img/champion/Aatrox.png";
-            Picasso.with(mContext)
-                    .load(url)
-                    .resize(120,120)
-                    .placeholder(R.drawable.sample_2)
-                    .error(R.drawable.sample_2)
-                    .into(imageView);
-        } else {
-            grid = convertView;
-        }
+       grid = new ImageView(mContext);
+       grid = inflater.inflate(R.layout.grid_single, null);
+       TextView textView = (TextView) grid.findViewById(R.id.grid_text);
+       ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
+       textView.setText(champNames.get(position));
+       String url = "http://ddragon.leagueoflegends.com/cdn/5.10.1/img/champion/" + champNames.get(position) + ".png";
+       Picasso.with(mContext)
+                 .load(url)
+                 .resize(120,120)
+                 .placeholder(R.drawable.champ_icon)
+                 .error(R.drawable.champ_icon)
+                 .into(imageView);
 
         return grid;
     }
