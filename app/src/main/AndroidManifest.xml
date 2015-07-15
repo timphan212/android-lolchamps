@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tutorial.tim.lolchamps" >
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +18,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ChampSelectInfoTab"
+            android:label="@string/title_activity_champ_select_info_tab"
+            android:parentActivityName=".ChampSelect" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.tutorial.tim.lolchamps.ChampSelect" />
         </activity>
     </application>
 

@@ -19,12 +19,10 @@ import java.util.Map;
  */
 
 public class MyAsyncTask extends AsyncTask<String, Void, String> {
-    private String jsonType;
     public AsyncResponse delegate;
 
-    public MyAsyncTask(AsyncResponse delegate, String str) {
+    public MyAsyncTask(AsyncResponse delegate) {
         this.delegate = delegate;
-        this.jsonType = str;
     }
 
     @Override
@@ -55,21 +53,6 @@ public class MyAsyncTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String str) {
-        if(this.jsonType.compareTo("champInfo") == 0) {
-            parseChampInfo(str);
-        }
-    }
-
-    private void parseChampInfo(String str) {
-        Gson gson = new Gson();
-        ChampionInfo.ChampionList champListObj = gson.fromJson(str, ChampionInfo.ChampionList.class);
-        List<String> list = new ArrayList<>();
-
-        for(Map.Entry<String, String> entry : champListObj.keys.entrySet()) {
-            list.add(entry.getValue());
-        }
-
-        Collections.sort(list);
-        delegate.processFinish(list);
+        delegate.processFinish(str);
     }
 }

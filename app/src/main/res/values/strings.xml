@@ -3,4 +3,19 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
+    <string name="title_activity_champ_select_info">Champions</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_champ_select_info_stats">ChampSelectInfoStats</string>
+    <string name="title_activity_champ_select_info_spells">ChampSelectInfoSpells</string>
+    <string name="title_activity_champ_select_info_lore">ChampSelectInfoLore</string>
+
+    <string name="title_section1">Stats</string>
+    <string name="title_section2">Spells</string>
+    <string name="title_section3">Tips</string>
+    <string name="title_section4">Lore</string>
+    <string name="title_activity_champ_select_info_tab">Champion Info</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
