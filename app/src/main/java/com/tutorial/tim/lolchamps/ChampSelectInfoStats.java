@@ -19,16 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 public class ChampSelectInfoStats extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
 
     private OnChampStatsListener mListener;
 
-    // TODO: Rename and change types and number of parameters
     public static ChampSelectInfoStats newInstance(String param1) {
         ChampSelectInfoStats fragment = new ChampSelectInfoStats();
         Bundle args = new Bundle();
@@ -82,7 +78,6 @@ public class ChampSelectInfoStats extends Fragment {
         return statsArray;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(String text) {
         if (mListener != null) {
             mListener.onChampStatsInteraction(text);
@@ -117,7 +112,6 @@ public class ChampSelectInfoStats extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnChampStatsListener {
-        // TODO: Update argument type and name
         public void onChampStatsInteraction(String text);
     }
 
