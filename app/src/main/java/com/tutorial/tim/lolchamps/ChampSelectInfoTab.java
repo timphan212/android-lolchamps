@@ -44,9 +44,11 @@ public class ChampSelectInfoTab extends ActionBarActivity implements ActionBar.T
         setContentView(R.layout.activity_champ_select_info_tab);
 
         // Set up the action bar.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Intent intent = getIntent();
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setTitle(intent.getStringExtra("com.tutorial.tim.lolchamps.NAME"));
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

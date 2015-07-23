@@ -7,6 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChampSelectInfoSpells extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -39,9 +45,61 @@ public class ChampSelectInfoSpells extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        List<ChampSpellItems> champSpells = parseChampSpells();
         View v = inflater.inflate(R.layout.fragment_champ_select_info_spells, container, false);
-
+        ListView lv = (ListView) v.findViewById(R.id.listView2);
+        lv.setAdapter(new ChampSelectInfoSpellsAdapter(getActivity(), champSpells));
         return v;
+    }
+
+    private List<ChampSpellItems> parseChampSpells () {
+        int count = 0;
+        List<ChampSpellItems> spellInfo = new ArrayList<>();
+        Gson gson = new Gson();
+        ChampionInfo.Champion champPassiveObj = gson.fromJson(mParam1, ChampionInfo.Champion.class);
+        ChampionInfo.Champion champInfoObj = gson.fromJson(mParam1, ChampionInfo.Champion.class);
+
+        ChampSpellItems passiveObj = new ChampSpellItems();
+        passiveObj.button = "Passive";
+        passiveObj.cooldown = "";
+        passiveObj.cost = "";
+        passiveObj.description = champPassiveObj.passive.description;
+        passiveObj.name = champPassiveObj.passive.name;
+        passiveObj.range = "";
+        passiveObj.key = champPassiveObj.passive.image.full;
+        spellInfo.add(passiveObj);
+
+        for(ChampionInfo.ChampSpells spell : champInfoObj.spells) {
+            ChampSpellItems spellObj = new ChampSpellItems();
+            spellObj.cost = spell.costBurn;
+            spellObj.description = spell.description;
+            spellObj.cooldown = spell.cooldownBurn;
+            spellObj.name = spell.name;
+            spellObj.range = spell.rangeBurn;
+            spellObj.key = spell.image.full;
+            switch(count) {
+                case 0:
+                    spellObj.button = "Q";
+                    break;
+                case 1:
+                    spellObj.button = "W";
+                    break;
+                case 2:
+                    spellObj.button = "E";
+                    break;
+                case 3:
+                    spellObj.button = "R";
+                    break;
+                default:
+                    spellObj.button = "";
+                    break;
+            }
+
+            count++;
+            spellInfo.add(spellObj);
+        }
+
+        return spellInfo;
     }
 
     public void onButtonPressed(String text) {
@@ -81,4 +139,14 @@ public class ChampSelectInfoSpells extends Fragment {
         public void onChampionSpellsInteraction(String text);
     }
 
+    class ChampSpellItems {
+        String button;
+        String name;
+        String cooldown;
+        String range;
+        String cost;
+        String description;
+        String key;
+    }
 }
+

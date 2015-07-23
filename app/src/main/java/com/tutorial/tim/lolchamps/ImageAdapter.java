@@ -44,22 +44,21 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View grid;
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-       grid = new ImageView(mContext);
-       grid = inflater.inflate(R.layout.grid_single, null);
-       TextView textView = (TextView) grid.findViewById(R.id.grid_text);
-       ImageView imageView = (ImageView)grid.findViewById(R.id.grid_image);
-       textView.setText(champNames.get(position));
-       String url = "http://ddragon.leagueoflegends.com/cdn/5.10.1/img/champion/" + champNames.get(position) + ".png";
-       Picasso.with(mContext)
+        if(convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.grid_single, null);
+        }
+        TextView textView = (TextView) convertView.findViewById(R.id.grid_text);
+        ImageView imageView = (ImageView)convertView.findViewById(R.id.grid_image);
+        textView.setText(champNames.get(position));
+        String url = "http://ddragon.leagueoflegends.com/cdn/5.14.1/img/champion/" + champNames.get(position) + ".png";
+        Picasso.with(mContext)
                  .load(url)
                  .resize(120,120)
                  .placeholder(R.drawable.champ_icon)
                  .error(R.drawable.champ_icon)
                  .into(imageView);
 
-        return grid;
+        return convertView;
     }
 }
