@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,8 +72,8 @@ public class ChampSelectInfoSpells extends Fragment {
 
         for(ChampionInfo.ChampSpells spell : champInfoObj.spells) {
             ChampSpellItems spellObj = new ChampSpellItems();
-            spellObj.cost = spell.costBurn;
-            spellObj.description = spell.description;
+            spellObj.cost = parseSpellDescription(spell.resource, spell);
+            spellObj.description = parseSpellDescription(spell.tooltip, spell);
             spellObj.cooldown = spell.cooldownBurn;
             spellObj.name = spell.name;
             spellObj.range = spell.rangeBurn;
@@ -100,6 +101,57 @@ public class ChampSelectInfoSpells extends Fragment {
         }
 
         return spellInfo;
+    }
+
+    private String parseSpellDescription(String str, ChampionInfo.ChampSpells spell) {
+        String edittedStr = str;
+
+        for(int i = 1; i < 11; i++) {
+            if(edittedStr.contains("{{ e" + i + " }}")) {
+                if(spell.key.compareTo("AatroxR") == 0 && i == 7) {
+                    edittedStr = edittedStr.replaceAll("\\{\\{ e" + i + " \\}\\}", "20");
+                }
+                else {
+                    edittedStr = edittedStr.replaceAll("\\{\\{ e" + i + " \\}\\}", spell.effectBurn.get(i));
+                }
+            }
+        }
+        for(int i = 1; i < 3; i++) {
+            if(edittedStr.contains("{{ a" + i + " }}")) {
+                for(ChampionInfo.ChampSpellVars var : spell.vars) {
+                    if(var.key.compareTo("a" + i) == 0) {
+                        List<Double> list = var.coeff;
+                        for(int j = 0; j < list.size(); j++) {
+                            list.set(j, list.get(j) * 100);
+                        }
+                        edittedStr = edittedStr.replaceAll("\\{\\{ a" + i + " \\}\\}", TextUtils.join("/", list) + "%");
+                        break;
+                    }
+                }
+            }
+        }
+        for(int i = 1; i < 7; i++) {
+            if(edittedStr.contains("{{ f" + i + " }}")) {
+                for(ChampionInfo.ChampSpellVars var : spell.vars) {
+                    if(var.key.compareTo("f" + i) == 0) {
+                        List<Double> list = var.coeff;
+                        for(int j = 0; j < list.size(); j++) {
+                            list.set(j, list.get(j) * 100);
+                        }
+                        edittedStr = edittedStr.replaceAll("\\{\\{ f" + i + " \\}\\}", TextUtils.join("/", list) + "%");
+                        break;
+                    }
+                }
+            }
+        }
+        if(edittedStr.contains("{{ cost }}")) {
+            edittedStr = edittedStr.replaceAll("\\{\\{ cost \\}\\}", spell.costBurn);
+        }
+        if(edittedStr.contains("{{ maxammo }}")) {
+            edittedStr = edittedStr.replaceAll("\\{\\{ maxammo \\}\\}", "2");
+        }
+
+        return edittedStr;
     }
 
     public void onButtonPressed(String text) {

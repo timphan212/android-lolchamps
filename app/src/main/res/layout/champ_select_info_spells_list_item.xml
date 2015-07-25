@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spell_cd"
-        android:layout_below="@+id/spell_range"
+        android:layout_below="@+id/spell_cost"
         android:layout_toRightOf="@id/spell_image"
         android:text="test_cd"
         android:layout_marginLeft="10dp"
@@ -57,10 +57,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/spell_cost"
         android:text="test_cost"
-        android:layout_above="@+id/spell_cd"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"/>
+        android:layout_below="@+id/spell_range"
+        android:layout_toRightOf="@+id/spell_image"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"/>
 
     <TextView
         android:layout_width="wrap_content"

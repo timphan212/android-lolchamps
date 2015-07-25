@@ -56,7 +56,7 @@ public class ChampSelectInfoSpellsAdapter extends BaseAdapter {
             spellButton = (TextView) convertView.findViewById(R.id.passive_button);
             spellButton.setText(champSpells.get(position).button);
             spellDescrip = (TextView) convertView.findViewById(R.id.passive_description);
-            spellDescrip.setText(champSpells.get(position).description);
+            spellDescrip.setText(Html.fromHtml(champSpells.get(position).description));
             spellImage = (ImageView) convertView.findViewById(R.id.passive_image);
         }
         else {
@@ -74,7 +74,7 @@ public class ChampSelectInfoSpellsAdapter extends BaseAdapter {
             spellButton = (TextView) convertView.findViewById(R.id.spell_button);
             spellButton.setText(champSpells.get(position).button);
             spellDescrip = (TextView) convertView.findViewById(R.id.spell_description);
-            spellDescrip.setText(champSpells.get(position).description);
+            spellDescrip.setText(Html.fromHtml(champSpells.get(position).description));
             spellImage = (ImageView) convertView.findViewById(R.id.spell_image);
         }
 
